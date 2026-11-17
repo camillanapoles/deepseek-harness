@@ -42,7 +42,7 @@ git add "$FEED_PATH"
 if git diff --cached --quiet; then
   echo "the feed did not change"
 else
-  git commit -m "chore(droidspaces): regenerate the rootfs feed for $TAG"
+  git commit -m "chore(droidspaces): regenerate the rootfs feed for $TAG [skip ci]"
   git push origin "HEAD:$TARGET_BRANCH"
 fi
 
