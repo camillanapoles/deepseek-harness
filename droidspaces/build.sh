@@ -11,7 +11,8 @@
 # Output: <Name>-Droidspaces-rootfs-<arch>-<YYYYMMDD>-<version>.tar.xz
 set -euo pipefail
 
-cd "$(dirname "$0")"
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+cd "$SCRIPT_DIR"
 
 ARCH=""
 NAME=""
@@ -29,7 +30,7 @@ if [ -z "$ARCH" ] || [ -z "$NAME" ]; then
   exit 1
 fi
 
-DOCKERFILE="templates/$ARCH/$NAME.Dockerfile"
+DOCKERFILE="$SCRIPT_DIR/templates/$ARCH/$NAME.Dockerfile"
 if [ ! -f "$DOCKERFILE" ]; then
   echo "Error: $DOCKERFILE not found" >&2
   exit 1
@@ -42,8 +43,8 @@ PLATFORM=$(jq -er --arg a "$ARCH" '.[$a].platform' archs.json) || {
 
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 BUILD_DATE=$(date +%Y%m%d)
-FINAL_NAME="${NAME}-Droidspaces-rootfs-${ARCH}-${BUILD_DATE}-${VERSION}.tar.xz"
-TEMP_TAR="${NAME}-rootfs-${ARCH}.tar"
+FINAL_NAME="$SCRIPT_DIR/${NAME}-Droidspaces-rootfs-${ARCH}-${BUILD_DATE}-${VERSION}.tar.xz"
+TEMP_TAR="$SCRIPT_DIR/${NAME}-rootfs-${ARCH}.tar"
 
 echo "========================================================="
 echo " Template : $DOCKERFILE"

@@ -14,7 +14,7 @@ TARGET_BRANCH=${GITHUB_REF_NAME:-$(git rev-parse --abbrev-ref HEAD)}
 TAG=${DSH_ROOTFS_TAG:-droidspaces-rootfs-v$(date -u +%Y%m%d-%H%M%S)}
 
 shopt -s nullglob
-ASSETS=(*-Droidspaces-rootfs-*.tar.xz)
+ASSETS=(droidspaces/*-Droidspaces-rootfs-*.tar.xz)
 shopt -u nullglob
 if [ ${#ASSETS[@]} -eq 0 ]; then
   echo "error: no rootfs tarball to publish" >&2
@@ -30,7 +30,7 @@ gh release create "$TAG" \
 
 # The feed is generated from the published release, so the download addresses
 # and the digests come from the assets the app downloads.
-python3 droidspaces/scripts/generate_rootfs_json.py --release "$TAG" --assets .
+python3 droidspaces/scripts/generate_rootfs_json.py --release "$TAG" --assets droidspaces
 
 # The same file is attached to the release, which gives the feed a permanent
 # address that no branch move can take away.
