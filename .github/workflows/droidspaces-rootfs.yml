@@ -1,0 +1,94 @@
+name: Droidspaces rootfs
+
+# Builds the DeepSeek Harness rootfs images for Droidspaces, publishes them as
+# a release, and regenerates droidspaces/rootfs.json from that release. The
+# build definitions live in droidspaces/; see droidspaces/README.md.
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'droidspaces/**'
+      - '.github/workflows/droidspaces-rootfs.yml'
+  schedule:
+    - cron: '23 4 * * 1'
+  workflow_dispatch:
+    inputs:
+      update_json_only:
+        description: 'Regenerate the feed from the latest release without building the images'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: droidspaces-rootfs
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build ${{ matrix.arch }}
+    # The architectures mirror droidspaces/archs.json.
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+          - arch: x86_64
+            runner: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the rootfs image
+        run: ./droidspaces/build.sh -a ${{ matrix.arch }} -i DeepSeek-Harness -v "${{ github.run_number }}"
+
+      - name: Upload the rootfs image
+        uses: actions/upload-artifact@v4
+        with:
+          name: rootfs-${{ matrix.arch }}
+          path: '*-Droidspaces-rootfs-*.tar.xz'
+          retention-days: 7
+          if-no-files-found: error
+
+  publish:
+    name: Publish the release and the feed
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: .
+          pattern: rootfs-*
+          merge-multiple: true
+
+      - name: Publish the release and regenerate the feed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./droidspaces/scripts/publish-release.sh
+
+  feed-only:
+    name: Regenerate the feed only
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.update_json_only }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate the feed from the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 droidspaces/scripts/generate_rootfs_json.py
+
+      - name: Record the regenerated feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add droidspaces/rootfs.json
+          git diff --cached --quiet || git commit -m "chore(droidspaces): regenerate the rootfs feed"
+          git push origin "HEAD:${{ github.ref_name }}"
