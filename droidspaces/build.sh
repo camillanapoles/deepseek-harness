@@ -76,14 +76,19 @@ docker buildx build \
   .
 
 # The app accepts a tarball only when it holds a Linux root filesystem at the
-# top level, so the archive is checked before it is compressed.
+# top level, so the archive is checked before it is compressed. The listing
+# goes to a file: grepping the pipe directly would close it early and turn
+# the listing into a write error.
+LISTING="${TEMP_TAR}.list"
+tar -tf "$TEMP_TAR" > "$LISTING"
 for entry in bin sbin etc usr; do
-  if ! tar -tf "$TEMP_TAR" | grep -qE "^(\./)?$entry(/|$)"; then
+  if ! grep -qE "^(\./)?${entry}(/|$)" "$LISTING"; then
     echo "Error: the built archive has no top-level '$entry' entry" >&2
-    tar -tf "$TEMP_TAR" | head -20 >&2
+    head -20 "$LISTING" >&2
     exit 1
   fi
 done
+rm -f "$LISTING"
 
 echo "Compressing (xz -T0 -6)..."
 xz -T0 -6 -f "$TEMP_TAR"
