@@ -12,6 +12,7 @@ set -eu
 
 DSH_REPO_DIR=${DSH_REPO_DIR:-/opt/deepseek-harness}
 DSH_HOME=${DSH_HOME:-/var/lib/dsh}
+DSH_SERVICES_DIR=${DSH_SERVICES_DIR:-/usr/local/lib/dsh}
 DSH_WEB_PORT=${DSH_WEB_PORT:-3080}
 DSH_GIT_PORT=${DSH_GIT_PORT:-9418}
 DSH_REPO_HTTP_PORT=${DSH_REPO_HTTP_PORT:-8080}
@@ -52,7 +53,7 @@ supervise 'repository git daemon' \
   git daemon --reuseaddr --informative-errors --export-all \
   --base-path=/opt --port="$DSH_GIT_PORT" /opt &
 supervise 'repository http server' \
-  node /usr/local/lib/dsh/serve-repo.mjs --root "$DSH_REPO_DIR" --port "$DSH_REPO_HTTP_PORT" &
+  node "$DSH_SERVICES_DIR/serve-repo.mjs" --root "$DSH_REPO_DIR" --port "$DSH_REPO_HTTP_PORT" &
 
 log "web ui http://$ip_address:$DSH_WEB_PORT/ (the launch token is printed by the harness)"
 log "repository git://$ip_address:$DSH_GIT_PORT/deepseek-harness"
