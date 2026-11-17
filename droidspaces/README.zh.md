@@ -9,13 +9,13 @@
 Droidspaces 读取一份可下载根文件的订阅源。在应用中选择 **Containers → + → Repository → Manage Repositories**，添加下面的地址即可订阅：
 
 ```text
-https://github.com/camillanapoles/deepseek-harness/raw/refs/heads/master/droidspaces/rootfs.json
+https://github.com/camillanapoles/deepseek-harness/releases/download/droidspaces-rootfs-v20261117-012617/rootfs.json
 ```
 
-同一份文件会附在每次发布的 release 上，这让订阅源拥有一个不会因分支变动而失效的固定地址：
+该地址是已发布 release 的订阅源，只要 release 还在就始终有效。同一份文件也保存在仓库中，之后每次构建都会替换它：
 
 ```text
-https://github.com/camillanapoles/deepseek-harness/releases/download/droidspaces-rootfs-v1/rootfs.json
+https://github.com/camillanapoles/deepseek-harness/raw/refs/heads/master/droidspaces/rootfs.json
 ```
 
 应用会按设备架构过滤条目，因此手机看到 `aarch64` 条目，桌面设备看到 `x86_64` 条目。

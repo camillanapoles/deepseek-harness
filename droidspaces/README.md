@@ -9,13 +9,13 @@ This directory builds a [Droidspaces](https://www.droidspaces.org/) root filesys
 Droidspaces reads a feed of downloadable root files. Subscribe to this one in the app with **Containers → + → Repository → Manage Repositories**, and add the address:
 
 ```text
-https://github.com/camillanapoles/deepseek-harness/raw/refs/heads/master/droidspaces/rootfs.json
+https://github.com/camillanapoles/deepseek-harness/releases/download/droidspaces-rootfs-v20261117-012617/rootfs.json
 ```
 
-The same file is attached to every published release, which gives the feed a permanent address that no branch move takes away:
+That address is the feed of the published release, and it stays valid as long as the release does. The same file lives in the repository, where every later build replaces it:
 
 ```text
-https://github.com/camillanapoles/deepseek-harness/releases/download/droidspaces-rootfs-v1/rootfs.json
+https://github.com/camillanapoles/deepseek-harness/raw/refs/heads/master/droidspaces/rootfs.json
 ```
 
 The app filters the entries by the device architecture, so a phone sees the `aarch64` entry and a desktop sees the `x86_64` one.
