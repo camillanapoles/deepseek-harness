@@ -55,9 +55,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# pnpm manages the repository workspace; the version is pinned by the
-# repository's own packageManager field.
-RUN corepack enable && corepack prepare pnpm@11.28.5 --activate
+# pnpm manages the repository workspace; the version is the one the
+# repository's own packageManager field pins.
+RUN npm install --global pnpm@11.28.5 && pnpm --version
 
 # The published command is the supported runtime. The repository below is the
 # working tree it operates on.
@@ -75,13 +75,12 @@ RUN git init . \
 
 # The workspace dependencies, so the hosted repository is configured and ready
 # to build, test, or edit.
-RUN corepack pnpm install --frozen-lockfile \
-    && corepack pnpm store prune \
-    && rm -rf /root/.cache /root/.npm /opt/pnpm/store
+RUN pnpm config set store-dir /opt/pnpm/store \
+    && pnpm install --frozen-lockfile \
+    && rm -rf /opt/pnpm/store /root/.cache /root/.npm
 
 # A plain user for the terminal the app offers, next to root.
-RUN useradd --create-home --shell /bin/bash --uid 1000 droid \
-    && git config --global --add safe.directory /opt/deepseek-harness
+RUN useradd --create-home --shell /bin/bash --uid 1000 droid
 
 # Droidspaces executes /sbin/init as PID 1. The image replaces the distribution
 # init with the one that publishes the harness and the repository.

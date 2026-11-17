@@ -67,6 +67,7 @@ docker buildx inspect --bootstrap >/dev/null
 
 cd "$REPO_ROOT"
 docker buildx build \
+  --progress=plain \
   --platform "$PLATFORM" \
   --target export \
   --output "type=tar,dest=$TEMP_TAR" \
@@ -83,8 +84,8 @@ for entry in bin sbin etc usr; do
   fi
 done
 
-echo "Compressing (xz -T0 -9)..."
-xz -T0 -9 -f "$TEMP_TAR"
+echo "Compressing (xz -T0 -6)..."
+xz -T0 -6 -f "$TEMP_TAR"
 mv "${TEMP_TAR}.xz" "$FINAL_NAME"
 
 echo "========================================================="
