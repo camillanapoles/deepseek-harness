@@ -9,7 +9,7 @@ This directory builds a [Droidspaces](https://www.droidspaces.org/) root filesys
 Droidspaces reads a feed of downloadable root files. Subscribe to this one in the app with **Containers → + → Repository → Manage Repositories**, and add the address:
 
 ```text
-https://github.com/camillanapoles/deepseek-harness/releases/download/droidspaces-rootfs-v20261117-014202/rootfs.json
+https://github.com/camillanapoles/deepseek-harness/releases/download/droidspaces-rootfs-v20261117-015755/rootfs.json
 ```
 
 That address is the feed of the published release, and it stays valid as long as the release does. The same file lives in the repository, where every later build replaces it:
