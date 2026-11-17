@@ -79,8 +79,9 @@ RUN pnpm config set store-dir /opt/pnpm/store \
     && pnpm install --frozen-lockfile \
     && rm -rf /opt/pnpm/store /root/.cache /root/.npm
 
-# A plain user for the terminal the app offers, next to root.
-RUN useradd --create-home --shell /bin/bash --uid 1000 droid
+# A plain user for the terminal the app offers, next to root. The base image
+# already owns uid 1000, so this one takes the next free number.
+RUN useradd --create-home --shell /bin/bash droid
 
 # Droidspaces executes /sbin/init as PID 1. The image replaces the distribution
 # init with the one that publishes the harness and the repository.
