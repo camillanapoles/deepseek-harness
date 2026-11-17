@@ -1,0 +1,35 @@
+#!/bin/sh
+# Configure the container interface from the lease the runtime's DHCP server
+# hands out. BusyBox calls this script with "bound", "renew" or "deconfig".
+
+set -eu
+
+case "${1:-}" in
+  bound | renew)
+    # BusyBox reports the netmask either as a prefix length or in dotted form.
+    mask=${subnet:-24}
+    case "$mask" in
+      *.*) mask=$(printf '%s\n' "$mask" | awk -F. 'function b(o, i) { for (i = 3; i >= 0; i--) { if (o >= 2 ^ i) b += 2 ^ i } return b }
+        { print b($1) + b($2) + b($3) + b($4) }') ;;
+    esac
+
+    ip -4 addr flush dev eth0 2>/dev/null || true
+    ip -4 addr add "${ip}/${mask}" dev eth0
+    ip link set eth0 up
+
+    if [ -n "${router:-}" ]; then
+      ip route replace default via "${router%%/*}" dev eth0
+    fi
+
+    if [ -n "${dns:-}" ] && [ ! -s /etc/resolv.conf ]; then
+      for server in $dns; do
+        printf 'nameserver %s\n' "$server"
+      done >/etc/resolv.conf
+    fi
+    ;;
+  deconfig)
+    ip -4 addr flush dev eth0 2>/dev/null || true
+    ;;
+esac
+
+exit 0

@@ -1,0 +1,28 @@
+[
+  {
+    "author": "DeepSeek-Dsh-Agent",
+    "name": "DeepSeek Harness 0.2.2-rc.3",
+    "distro": "DeepSeek Harness",
+    "description": "DeepSeek Harness agent harness with the complete repository installed and configured, the published dsh command, and an init that serves the Web UI and publishes the repository over git and HTTP.",
+    "architecture": "aarch64",
+    "file": "DeepSeek-Harness-Droidspaces-rootfs-aarch64-20261117-8.tar.xz",
+    "download_url": "https://github.com/camillanapoles/deepseek-harness/releases/download/droidspaces-rootfs-v20261117-015755/DeepSeek-Harness-Droidspaces-rootfs-aarch64-20261117-8.tar.xz",
+    "sha256": "5fe83e0dc71416762a6a3ba16425f794ec12f9a975412cb2b673544551470456",
+    "size_bytes": 716092944,
+    "version": "8",
+    "build_date": "20261117"
+  },
+  {
+    "author": "DeepSeek-Dsh-Agent",
+    "name": "DeepSeek Harness 0.2.2-rc.3",
+    "distro": "DeepSeek Harness",
+    "description": "DeepSeek Harness agent harness with the complete repository installed and configured, the published dsh command, and an init that serves the Web UI and publishes the repository over git and HTTP.",
+    "architecture": "x86_64",
+    "file": "DeepSeek-Harness-Droidspaces-rootfs-x86_64-20261117-8.tar.xz",
+    "download_url": "https://github.com/camillanapoles/deepseek-harness/releases/download/droidspaces-rootfs-v20261117-015755/DeepSeek-Harness-Droidspaces-rootfs-x86_64-20261117-8.tar.xz",
+    "sha256": "7d57538f58561f0b8e99d95840cfcdb873b80030b71ab164ddbd59861f4ef2af",
+    "size_bytes": 748861292,
+    "version": "8",
+    "build_date": "20261117"
+  }
+]

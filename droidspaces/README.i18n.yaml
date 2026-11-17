@@ -1,0 +1,22 @@
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write droidspaces/README.md
+/deepseek-harness-on-droidspaces:
+  en: 2eb5c8a13024952c
+  zh: c130b01a2435cc9c
+/deepseek-harness-on-droidspaces/the-feed:
+  en: 506af2e8a705964b
+  zh: 7cbf1725a7d3024e
+/deepseek-harness-on-droidspaces/what-the-container-publishes:
+  en: 90a4d15aa7d9b891
+  zh: 3e6f72c2fed709d2
+/deepseek-harness-on-droidspaces/inside-the-container:
+  en: 9f095c42c7a03c4e
+  zh: fba3582ac3f218c2
+/deepseek-harness-on-droidspaces/building-the-images:
+  en: cadd69013a13baf0
+  zh: 1f954750f447e800
+/deepseek-harness-on-droidspaces/layout:
+  en: 1ab8b509e0fe148b
+  zh: c5295d9510d025f5
